@@ -22,6 +22,15 @@ body {
 
 /* Loader */
 
+.loader{
+  background: whitesmoke;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /* Navigation */
 .navigation-container {
@@ -88,6 +97,9 @@ body {
 }
 
 /* Hidden */
+.hidden{
+  display: none;
+}
 
 
 /* Large Smartphone (Vertical) */
