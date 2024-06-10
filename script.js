@@ -1,5 +1,5 @@
 const resultsNav=document.getElementById("resultsNav");
-const favouritesNav=document.getElementById("FavouritesNav");
+const favouritesNav=document.getElementById("favouritesNav");
 const imagesContainer=document.querySelector(".images-container");
 const saveConfirmed=document.querySelector(".save-confirmed");
 const loader=document.querySelector(".loader");
@@ -15,11 +15,25 @@ let resultsArray=[];
 let favourites={};
 let displayArray=[];
 
+//function to show the conent and hide the loader
+function showContent(page){
+    if(page=='favourites'){
+        resultsNav.classList.add('hidden');
+        favouritesNav.classList.remove('hidden');
+    }else{
+        resultsNav.classList.remove('hidden');
+        favouritesNav.classList.add('hidden');
+    }
+    window.scrollTo({top: 0,behavior:'instant'});
+    loader.classList.add("hidden");
+}
+
 function createDOMNodes(page){
     if(page=='favourites'){
-        displayArray=Object.values(favourites);
+        console.log('favourites');
+        displayArray=Object.values(favourites);       
     }else{
-        displayArray=resultsArray;
+        displayArray=resultsArray;        
     }
 
       displayArray.forEach((result)=>{
@@ -63,7 +77,7 @@ function createDOMNodes(page){
         if(!result.copyright){
             copyright.innerText='';
         }else{
-            copyright.innerText=`${result.copyright}`;
+            copyright.innerText=` ${result.copyright}`;
         }
         
         small.appendChild(date);
@@ -83,17 +97,21 @@ function createDOMNodes(page){
 }
 
 //function to update DOM
-function updateDOM(){
+function updateDOM(page){
     imagesContainer.innerHTML='';
     //check if favourites are there in local storage
     if(localStorage.getItem('nasaFavourites')){
         favourites=JSON.parse(localStorage.getItem('nasaFavourites'));
     }
-    createDOMNodes('favourites');
+    createDOMNodes(page);
+    showContent(page);
 }
 
 //function to get Nasa pictures
 async function getNASAPictures(){
+    //show loader
+    loader.classList.remove("hidden");
+
     try{
         const results=await fetch(apiURL);
         resultsArray=await results.json();
